@@ -61,7 +61,7 @@ This is a Real-time Instagram Clone built with the following stack:
   );
   ```
 
-  - `useContext()` - prevent prop drilling
+  - `useContext()` - prevent prop drilling:
 
   ```
   <!-- App.js -->
@@ -82,6 +82,60 @@ This is a Real-time Instagram Clone built with the following stack:
 
   // Import `useContext()` and initialize the context value for use
   const currentUser = useContext(UserContext);
+
+  ```
+
+  - `useReducer()` - manage multiple state manipulations globally in combination with `useContext`:
+
+  ```
+  <!-- App.js -->
+
+    // 1. Declare useReducer
+    const [state, dispatch] = useReducer(PostReducer, initialPostsState);
+
+    // 2. Pass the state and dispatch function down through context
+    <PostContext.Provider value={{ state, dispatch }}>
+      <UserContext.Provider value={user}>
+        {user ? app() : login()}
+      </UserContext.Provider>
+    </PostContext.Provider>
+
+
+  <!-- PostReducer.js -->
+
+    // 3. Create reducer function
+    function PostReducer(state, action) {
+      switch (action.type) {
+        case actions.ADD_POST: {
+          const newPost = action.payload.postCreated;
+          return { posts: [newPost, ...state.posts] };
+        }
+        case actions.DELETE_POST: {
+          const deletedPostId = action.payload.id;
+          const updatedPostslist = state.posts.filter(
+            (post) => post.id !== deletedPostId
+          );
+          return { posts: updatedPostslist };
+        }
+        default:
+          return state;
+      }
+    }
+
+
+  <!-- CreatePost.js -->
+
+    // 4. Import and extract dispatch from PostContext
+    const { dispatch } = useContext(PostContext);
+
+    // 5. Call the dispatch function
+    dispatch({ type: actions.ADD_POST, payload: { postCreated } });
+
+
+  <!-- Post.js -->
+    // Same process...
+    const { dispatch } = useContext(PostContext);
+    dispatch({ type: actions.DELETE_POST, payload: { id } });
 
   ```
 

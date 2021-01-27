@@ -1,14 +1,27 @@
-import { React, useState, useEffect, useCallback, createContext } from "react";
+import {
+  React,
+  useState,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+  useReducer,
+} from "react";
 import Login from "./Components/Login";
 import Header from "./Components/Header";
 import CreatePost from "./Components/CreatePost";
 import PostList from "./Components/PostList";
+import PostReducer from "./PostReducer";
 
 export const UserContext = createContext();
+export const PostContext = createContext({
+  posts: [],
+});
 
 const App = () => {
   const [user, setUser] = useState("");
-  const [posts, setPosts] = useState([]);
+  const initialPostsState = useContext(PostContext);
+  const [state, dispatch] = useReducer(PostReducer, initialPostsState);
 
   useEffect(() => {
     document.title = user
@@ -16,20 +29,23 @@ const App = () => {
       : `Please Login | Social Media App`;
   }, [user]);
 
-  const handleAddPost = useCallback(
-    (newPost) => {
-      setPosts((prevPosts) => [newPost, ...prevPosts]);
-    },
-    [posts]
-  );
+  // const handleAddPost = useCallback(
+  //   (newPost) => {
+  //     setPosts((prevPosts) => [newPost, ...prevPosts]);
+  //   },
+  //   [posts]
+  // );
 
   const app = () => {
     return (
       <div>
         <Header user={user} setUser={setUser} />
-        <CreatePost user={user} handleAddPost={handleAddPost} />
-        {posts.length > 0 ? (
-          <PostList posts={posts} user={user} />
+        <CreatePost
+          user={user}
+          // handleAddPost={handleAddPost}
+        />
+        {state.posts.length > 0 ? (
+          <PostList posts={state.posts} user={user} />
         ) : (
           <h1> No Posts Found...</h1>
         )}
@@ -45,9 +61,11 @@ const App = () => {
   };
 
   return (
-    <UserContext.Provider value={user}>
-      {user ? app() : login()}
-    </UserContext.Provider>
+    <PostContext.Provider value={{ state, dispatch }}>
+      <UserContext.Provider value={user}>
+        {user ? app() : login()}
+      </UserContext.Provider>
+    </PostContext.Provider>
   );
 };
 
