@@ -1,3 +1,13 @@
+# React Social Media
+
+This is a Real-time Instagram Clone built with the following stack:
+
+- React (JavaScript library)
+- Material UI (UI component library)
+- Apollo (manage global App State)
+- GraphQL (data management library)
+  -Hasura (GraphQL API as a service)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
