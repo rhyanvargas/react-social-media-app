@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useCallback } from "react";
 import Login from "./Components/Login";
 import Header from "./Components/Header";
 import CreatePost from "./Components/CreatePost";
@@ -14,8 +14,12 @@ const App = () => {
       : `Please Login | Social Media App`;
   }, [user]);
 
-  const handleAddPost = (newPost) =>
-    setPosts((prevPosts) => [newPost, ...prevPosts]);
+  const handleAddPost = useCallback(
+    (newPost) => {
+      setPosts((prevPosts) => [newPost, ...prevPosts]);
+    },
+    [posts]
+  );
 
   const app = () => {
     return (

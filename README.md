@@ -16,6 +16,14 @@ This is a Real-time Instagram Clone built with the following stack:
      ```
      imageInputRef.current.value = "";
      ```
+     - `useCallback()` - prevent re-creation(un-necessarily) of call back functions when passed down (memoized):
+     ```
+      const handleAddPost = useCallback((newPost) => {
+          setPosts((prevPosts) => [newPost, ...prevPosts]);
+        },
+        [posts]
+      );
+     ```
   3. Passing Down CallBack Functions
 
   ```
