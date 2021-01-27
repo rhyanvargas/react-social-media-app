@@ -1,8 +1,6 @@
 import React from "react";
 
-export default function Post({ currPost }) {
-  const { postTitle, user, image, post } = currPost;
-
+export default function Post({ postTitle, user, image, content }) {
   const showImage = (image) => {
     const imageURL = URL.createObjectURL(image);
     const imageName = image.name;
@@ -32,7 +30,7 @@ export default function Post({ currPost }) {
         <h1>{postTitle}</h1>
         <figure>{showImage(image)}</figure>
         <caption>Author: {user}</caption>
-        <p>{post} </p>
+        <p>{content} </p>
       </div>
     );
   };

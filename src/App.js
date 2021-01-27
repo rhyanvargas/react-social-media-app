@@ -14,11 +14,14 @@ const App = () => {
       : `Please Login | Social Media App`;
   }, [user]);
 
+  const handleAddPost = (newPost) =>
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
+
   const app = () => {
     return (
       <div>
         <Header user={user} setUser={setUser} />
-        <CreatePost user={user} setPosts={setPosts} />
+        <CreatePost user={user} handleAddPost={handleAddPost} />
         {posts.length > 0 ? (
           <PostList posts={posts} />
         ) : (

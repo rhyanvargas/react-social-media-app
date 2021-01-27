@@ -8,6 +8,48 @@ This is a Real-time Instagram Clone built with the following stack:
 - GraphQL (data management library)
   -Hasura (GraphQL API as a service)
 
+  ## Patterns and Concepts used
+
+  1. Controlled Components : input `values` are using `state` as single source of truth
+  2. React Hooks
+     - `useRef()` - clear image value after submitting a post:
+     ```
+     imageInputRef.current.value = "";
+     ```
+  3. Passing Down CallBack Functions
+
+  ```
+  <!-- App.js -->
+    // Callback Function
+    const handleAddPost = (newPost) => setPosts((prevPosts) => [newPost, ...prevPosts]);
+
+    // Pass down callback function
+    <CreatePost user={user} handleAddPost={handleAddPost} />
+
+  <!-- CreatePost.js -->
+    const handleFormSubmit = (event) => {
+
+    // Callback function is called
+    handleAddPost(postCreated);
+
+    ...
+  };
+  ```
+
+  4. ES6 Object Destructuring
+
+  - Object Spread Operator
+
+    - Declarative Passing of props properties:
+
+    ```
+    <!-- PostList.js -->
+    <Post {...currPost}>
+
+    <!-- Post.js -->
+    Post({name,image,title})
+    ```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

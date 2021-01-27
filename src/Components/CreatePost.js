@@ -1,12 +1,13 @@
-import { React, useState } from "react";
+import { React, useState, useRef } from "react";
 
-export default function CreatePost({ user, setPosts }) {
+export default function CreatePost({ user, handleAddPost }) {
   const [image, setImage] = useState(null);
-  const [post, setpost] = useState(null);
-  const [postTitle, setpostTitle] = useState(null);
+  const [content, setContent] = useState(null);
+  const [postTitle, setPostTitle] = useState(null);
+  const imageInputRef = useRef();
 
   const handlePostChange = (event) => {
-    setpost(event.target.value);
+    setContent(event.target.value);
   };
   const handleImageChange = (event) => {
     const img = event.target.files[0];
@@ -19,19 +20,19 @@ export default function CreatePost({ user, setPosts }) {
       postTitle,
       user,
       image,
-      post,
+      content,
     };
+    handleAddPost(postCreated);
 
-    setPosts((prevPosts) => {
-      const newArray = [...prevPosts];
-      newArray.push(postCreated);
-      return newArray;
-    });
+    // Clear inputs
+    setContent("");
+    setPostTitle("");
+    imageInputRef.current.value = "";
   };
 
   const handleTitleChange = (event) => {
     const { value } = event.target;
-    setpostTitle(value);
+    setPostTitle(value);
   };
 
   const createPost = (
@@ -42,15 +43,17 @@ export default function CreatePost({ user, setPosts }) {
           type="text"
           onChange={handleTitleChange}
           placeholder="Add Title"
+          value={postTitle}
         />
         <br />
         <textarea
           type="text"
           onChange={handlePostChange}
           placeholder="Add Post Content"
+          value={content}
         />
         <br />
-        <input onChange={handleImageChange} type="file" />
+        <input ref={imageInputRef} onChange={handleImageChange} type="file" />
         <button type="submit">Submit Post</button>
       </form>
     </>
