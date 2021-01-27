@@ -10,24 +10,60 @@ This is a Real-time Instagram Clone built with the following stack:
 
   ## Patterns and Concepts used
 
-  1. Controlled Components : input `values` are using `state` as single source of truth
+  1. Controlled Components : input `values` are using `state` as single source of truth:
+
+     **Note: the `value` attribute uses the `postTitle state` for the single-source of truth reference**
+
+  ```
+  <!-- CreatePost.js -->
+
+  <input
+          type="text"
+          onChange={handleTitleChange}
+          placeholder="Add Title"
+          value={postTitle}
+        />
+  ```
+
   2. React Hooks
-     - `useRef()` - clear image value after submitting a post:
-     ```
-     imageInputRef.current.value = "";
-     ```
-     - `useCallback()` - prevent re-creation(un-necessarily) of call back functions when passed down (memoized):
-     ```
-      const handleAddPost = useCallback((newPost) => {
-          setPosts((prevPosts) => [newPost, ...prevPosts]);
-        },
-        [posts]
-      );
-     ```
+
+  - `useEffect()` - Performs side effects when dependencies change (and when mounted):
+
+  ```
+  <!-- App.js -->
+
+  useEffect(() => {
+    document.title = user
+      ? `${user}'s Feed`
+      : `Please Login | Social Media App`;
+  }, [user]);
+  ```
+
+  - `useRef()` - clear image value after submitting a post:
+
+  ```
+  <!-- CreatePost.js -->
+
+  imageInputRef.current.value = "";
+  ```
+
+  - `useCallback()` - prevent re-creation(un-necessarily) of call back functions when passed down (memoized):
+
+  ```
+  <!-- App.js -->
+
+  const handleAddPost = useCallback((newPost) => {
+      setPosts((prevPosts) => [newPost, ...prevPosts]);
+    },
+    [posts]
+  );
+  ```
+
   3. Passing Down CallBack Functions
 
   ```
   <!-- App.js -->
+
     // Callback Function
     const handleAddPost = (newPost) => setPosts((prevPosts) => [newPost, ...prevPosts]);
 
@@ -35,6 +71,7 @@ This is a Real-time Instagram Clone built with the following stack:
     <CreatePost user={user} handleAddPost={handleAddPost} />
 
   <!-- CreatePost.js -->
+
     const handleFormSubmit = (event) => {
 
     // Callback function is called
@@ -52,9 +89,11 @@ This is a Real-time Instagram Clone built with the following stack:
 
     ```
     <!-- PostList.js -->
+
     <Post {...currPost}>
 
     <!-- Post.js -->
+
     Post({name,image,title})
     ```
 
