@@ -1,6 +1,10 @@
-import React from "react";
+import { React, useContext } from "react";
+import { UserContext } from "../App";
 
 export default function Post({ postTitle, user, image, content }) {
+  const currentUser = useContext(UserContext);
+  const isCurrentUser = currentUser === user ? true : false;
+
   const showImage = (image) => {
     const imageURL = URL.createObjectURL(image);
     const imageName = image.name;
@@ -29,7 +33,9 @@ export default function Post({ postTitle, user, image, content }) {
       <div>
         <h1>{postTitle}</h1>
         <figure>{showImage(image)}</figure>
-        <caption>Author: {user}</caption>
+        <caption style={{ color: isCurrentUser && "green" }}>
+          Author: {user}
+        </caption>
         <p>{content} </p>
       </div>
     );

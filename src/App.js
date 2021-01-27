@@ -1,8 +1,10 @@
-import { React, useState, useEffect, useCallback } from "react";
+import { React, useState, useEffect, useCallback, createContext } from "react";
 import Login from "./Components/Login";
 import Header from "./Components/Header";
 import CreatePost from "./Components/CreatePost";
 import PostList from "./Components/PostList";
+
+export const UserContext = createContext();
 
 const App = () => {
   const [user, setUser] = useState("");
@@ -27,7 +29,7 @@ const App = () => {
         <Header user={user} setUser={setUser} />
         <CreatePost user={user} handleAddPost={handleAddPost} />
         {posts.length > 0 ? (
-          <PostList posts={posts} />
+          <PostList posts={posts} user={user} />
         ) : (
           <h1> No Posts Found...</h1>
         )}
@@ -42,7 +44,11 @@ const App = () => {
     );
   };
 
-  return <>{user ? app() : login()}</>;
+  return (
+    <UserContext.Provider value={user}>
+      {user ? app() : login()}
+    </UserContext.Provider>
+  );
 };
 
 export default App;

@@ -10,9 +10,11 @@ This is a Real-time Instagram Clone built with the following stack:
 
   ## Patterns and Concepts used
 
-  1. Controlled Components : input `values` are using `state` as single source of truth:
+  ### 1. Controlled Components
 
-     **Note: the `value` attribute uses the `postTitle state` for the single-source of truth reference**
+  Input `values` are using `state` as single source of truth:
+
+  **Note: the `value` attribute uses the `postTitle state` for the single-source of truth reference**
 
   ```
   <!-- CreatePost.js -->
@@ -25,7 +27,7 @@ This is a Real-time Instagram Clone built with the following stack:
         />
   ```
 
-  2. React Hooks
+  ### 2. React Hooks
 
   - `useEffect()` - Performs side effects when dependencies change (and when mounted):
 
@@ -59,7 +61,31 @@ This is a Real-time Instagram Clone built with the following stack:
   );
   ```
 
-  3. Passing Down CallBack Functions
+  - `useContext()` - prevent prop drilling
+
+  ```
+  <!-- App.js -->
+
+    // 1. Create the context and export
+    export const UserContext = createContext();
+
+    ...
+
+    // 2. Wrap components you want to provide the context value to
+    return (
+        <UserContext.Provider value={user}>
+          {user ? app() : login()}
+        </UserContext.Provider>
+      );
+
+  <!-- Post.js -->
+
+  // Import `useContext()` and initialize the context value for use
+  const currentUser = useContext(UserContext);
+
+  ```
+
+  ### 3. Passing Down CallBack Functions
 
   ```
   <!-- App.js -->
@@ -81,7 +107,7 @@ This is a Real-time Instagram Clone built with the following stack:
   };
   ```
 
-  4. ES6 Object Destructuring
+  ### 4. ES6 Object Destructuring
 
   - Object Spread Operator
 
@@ -96,6 +122,8 @@ This is a Real-time Instagram Clone built with the following stack:
 
     Post({name,image,title})
     ```
+
+---
 
 # Getting Started with Create React App
 
